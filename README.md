@@ -1,9 +1,10 @@
-<p align="center"><img src="{{ asset('Image/Logo/SIBICE_LOGO.png') }}" width="400" alt="SIBICE Logo"></p>
+<p align="center"><img src="public/Image/Logo/SIBICE_LOGO.png" width="400" alt="SIBICE Logo"></p>
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<img src="https://img.shields.io/badge/Laravel-11-red">
+  <img src="https://img.shields.io/badge/TailwindCSS-3-blue">
+  <img src="https://img.shields.io/badge/Database-MySQL-orange">
+  <img src="https://img.shields.io/badge/Auth-OAuth_2.0-purple">
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
