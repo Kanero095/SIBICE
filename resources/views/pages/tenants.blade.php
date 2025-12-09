@@ -18,7 +18,7 @@
                         <a href="{{ route('show-tenant', $data->Slug) }}" target="_blank">
                             <div class="grid grid-cols-1 md:flex">
                                 <div class="md:h-fit">
-                                    <img src="{{ asset('Image/Tenants/' . $data->Logo) }}"
+                                    <img src="{{ $data->Logo }}"
                                         class="rounded-lg h-60 w-60 md:max-h-44 md:max-w-60 mx-auto"
                                         alt="{{ $data->Logo }}">
                                 </div>

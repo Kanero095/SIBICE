@@ -14,7 +14,7 @@
                     class="w-full xl:w-72 drop-shadow border-2 border-[#000] rounded-lg transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-90 duration-300">
                     <a href="{{ $activity->LinkContent }}" target="_blank">
                         <div class="px-2 pt-2 h-60">
-                            <img src="{{ asset('Image/Activities/' . $activity->dateFormatted . '/' . $activity->ImageActivities) }}"
+                            <img src="{{ $activity->ImageActivities }}"
                                 class="rounded-lg border-2 border-[#1C6C99] max-h-60 w-full h-full" alt="">
                         </div>
                         <div class="grid grid-cols-2">

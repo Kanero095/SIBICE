@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use Cloudinary\Api\Upload\UploadApi;
 
 class RegisBinaanUKMController extends Controller
 {
@@ -23,18 +24,18 @@ class RegisBinaanUKMController extends Controller
     public function submit(Request $request, array $input)
     {
         $count = RegisBinaanUKM::where('Email', $request->Email)->count();
-        if ($count == 1){
-            return back()->with('error','Anda Telah Melakukan Registrasi. Silahkan Hubungi Admin!!!');
-        }  else {
+        if ($count == 1) {
+            return back()->with('error', 'Anda Telah Melakukan Registrasi. Silahkan Hubungi Admin!!!');
+        } else {
             Validator::make($input, [
                 'nameTenant' => ['required|string|max:255'],
-                'LBPOM' => ['nullable|file|mimes:pdf|max:2048'],
-                'LSNI' => ['nullable|file|mimes:pdf|max:2048'],
-                'LHALAL' => ['nullable|file|mimes:pdf|max:2048'],
-                'LPIRT' => ['nullable|file|mimes:pdf|max:2048'],
-                'LNIB' => ['nullable|file|mimes:pdf|max:2048'],
-                'LHKI' => ['nullable|file|mimes:pdf|max:2048'],
-                'Logo' => ['required|file|max:2048'],
+                'LBPOM' => ['nullable|file|mimes:pdf|max:5120'],
+                'LSNI' => ['nullable|file|mimes:pdf|max:5120'],
+                'LHALAL' => ['nullable|file|mimes:pdf|max:5120'],
+                'LPIRT' => ['nullable|file|mimes:pdf|max:5120'],
+                'LNIB' => ['nullable|file|mimes:pdf|max:5120'],
+                'LHKI' => ['nullable|file|mimes:pdf|max:5120'],
+                'Logo' => ['required|file|max:2048|mimes:jpeg,png,jpg,svg'],
             ]);
 
             $dateCreate = Carbon::now();
@@ -59,7 +60,13 @@ class RegisBinaanUKMController extends Controller
             // BPOM
             if ($request->hasFile('LBPOM')) {
                 $BPOM = 'BPOM_' . $request->nameTenant . '.pdf';
-                $FileBPOM = $request->file('LBPOM')->storeAs('FileRegistTenant/' . $years . '/' . $date . '/' . $request->nameTenant, $BPOM);
+                $uploadBPOM = (new UploadApi())->upload($request->file('LBPOM')->getRealPath(), [
+                    'folder' => 'SIBICE/Tenants/' . $request->nameTenant,
+                    'public_id' => $BPOM,
+                    'resource_type' => 'auto',
+                    'type' => 'upload',
+                ]);
+                $FileBPOM = $uploadBPOM['secure_url'];
             } else {
                 $FileBPOM = null;
             }
@@ -68,7 +75,13 @@ class RegisBinaanUKMController extends Controller
             // HALAL
             if ($request->hasFile('LHALAL')) {
                 $HALAL = 'HALAL_' . $request->nameTenant . '.pdf';
-                $FileHALAL = $request->file('LHALAL')->storeAs('FileRegistTenant/' . $years . '/' . $date . '/' . $request->nameTenant, $HALAL);
+                $uploadHALAL = (new UploadApi())->upload($request->file('LHALAL')->getRealPath(), [
+                    'folder' => 'SIBICE/Tenants/' . $request->nameTenant,
+                    'public_id' => $HALAL,
+                    'resource_type' => 'auto',
+                    'type' => 'upload',
+                ]);
+                $FileHALAL = $uploadHALAL['secure_url'];
             } else {
                 $FileHALAL = null;
             }
@@ -78,7 +91,13 @@ class RegisBinaanUKMController extends Controller
             // SNI
             if ($request->hasFile('LSNI')) {
                 $SNI = 'SNI_' . $request->nameTenant . '.pdf';
-                $FileSNI = $request->file('LSNI')->storeAs('FileRegistTenant/' . $years . '/' . $date . '/' . $request->nameTenant, $SNI);
+                $uploadSNI = (new UploadApi())->upload($request->file('LSNI')->getRealPath(), [
+                    'folder' => 'SIBICE/Tenants/' . $request->nameTenant,
+                    'public_id' => $SNI,
+                    'resource_type' => 'auto',
+                    'type' => 'upload',
+                ]);
+                $FileSNI = $uploadSNI['secure_url'];
             } else {
                 $FileSNI = null;
             }
@@ -87,7 +106,13 @@ class RegisBinaanUKMController extends Controller
             // HKI
             if ($request->hasFile('LHKI')) {
                 $HKI = 'HKI_' . $request->nameTenant . '.pdf';
-                $FileHKI = $request->file('LHKI')->storeAs('FileRegistTenant/' . $years . '/' . $date . '/' . $request->nameTenant, $HKI);
+                $uploadHKI = (new UploadApi())->upload($request->file('LHKI')->getRealPath(), [
+                    'folder' => 'SIBICE/Tenants/' . $request->nameTenant,
+                    'public_id' => $HKI,
+                    'resource_type' => 'auto',
+                    'type' => 'upload',
+                ]);
+                $FileHKI = $uploadHKI['secure_url'];
             } else {
                 $FileHKI = null;
             }
@@ -96,7 +121,13 @@ class RegisBinaanUKMController extends Controller
             // NIB
             if ($request->hasFile('LNIB')) {
                 $NIB = 'NIB_' . $request->nameTenant . '.pdf';
-                $FileNIB = $request->file('LNIB')->storeAs('FileRegistTenant/' . $years . '/' . $date . '/' . $request->nameTenant, $NIB);
+                $uploadNIB = (new UploadApi())->upload($request->file('LNIB')->getRealPath(), [
+                    'folder' => 'SIBICE/Tenants/' . $request->nameTenant,
+                    'public_id' => $NIB,
+                    'resource_type' => 'auto',
+                    'type' => 'upload',
+                ]);
+                $FileNIB = $uploadNIB['secure_url'];
             } else {
                 $FileNIB = null;
             }
@@ -105,25 +136,32 @@ class RegisBinaanUKMController extends Controller
             // PIRT
             if ($request->hasFile('LPIRT')) {
                 $PIRT = 'PIRT_' . $request->nameTenant . '.pdf';
-                $FilePIRT = $request->file('LPIRT')->storeAs('FileRegistTenant/' . $years . '/' . $date . '/' . $request->nameTenant, $PIRT);
+                $uploadPIRT = (new UploadApi())->upload($request->file('LPIRT')->getRealPath(), [
+                    'folder' => 'SIBICE/Tenants/' . $request->nameTenant,
+                    'public_id' => $PIRT,
+                    'resource_type' => 'auto',
+                    'type' => 'upload',
+                ]);
+                $FilePIRT = $uploadPIRT['secure_url'];
             } else {
                 $FilePIRT = null;
             }
             $regis->LPIRT = $FilePIRT;
 
             // Logo
-            $image = $request->file('Logo');
-            $Logo = 'Logo_' . $request->nameTenant . '.' . $image->getClientOriginalExtension();
-            $request->Logo->move('Image/Tenants/', $Logo);
-            $regis->Logo = $Logo;
+            $NameLogo = $date . '_Logo_' . $request->nameTenant;
+            $uploadLogo = (new UploadApi())->upload($request->file('Logo')->getRealPath(), [
+                'folder' => 'SIBICE/Tenants/' . $request->nameTenant,
+                'public_id' => $NameLogo,
+            ]);
+            $regis->Logo = $uploadLogo['secure_url'];
 
             // slug
             $slug = Str::slug($request->nameTenant . '&' . $request->sectorTenant . '&' . $request->Name);
             $regis->Slug = $slug;
 
-            // return dd($regis);
             $regis->save();
-            return back()->with('success','Registrasi Berhasil');
+            return back()->with('success', 'Registrasi Berhasil');
         }
     }
 
@@ -139,7 +177,7 @@ class RegisBinaanUKMController extends Controller
 
     public function pengajuan()
     {
-        if (Auth::check() && Auth::user()->roles == 'user'){
+        if (Auth::check() && Auth::user()->roles == 'user') {
             $account = Auth::user()->email;
             $datas = RegisBinaanUKM::where('email', $account)->get();
 
@@ -164,8 +202,8 @@ class RegisBinaanUKMController extends Controller
         $data = RegisBinaanUKM::where('slug', $Slug)->firstOrFail()->update([
             'statusTenant' => $request->statusTenant,
         ]);
-        if($data){
-            return redirect('/registrasi-binaan-ukm/verify')->with('success','Update Data Successfully');
+        if ($data) {
+            return redirect('/registrasi-binaan-ukm/verify')->with('success', 'Update Data Successfully');
         }
     }
 }

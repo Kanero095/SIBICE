@@ -6,6 +6,8 @@ use App\Models\Activities;
 use App\Models\RegisBinaanUKM;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Cloudinary\Api\Upload\UploadApi;
 
 class DefaultController extends Controller
 {
@@ -13,7 +15,7 @@ class DefaultController extends Controller
     {
         $activities = activities::orderBy('created_at', 'desc')->paginate(5);
         $tenants = RegisBinaanUKM::where('statusTenant', 'Diterima')->paginate(8);
-        return view('pages.home',[
+        return view('pages.home', [
             'activities' => $activities,
             'tenants' => $tenants,
         ]);
@@ -39,7 +41,7 @@ class DefaultController extends Controller
     {
         $tenants = RegisBinaanUKM::where('statusTenant', 'Diterima')->orderBy('created_at', 'desc')->paginate(8);
         $count = count($tenants);
-        return view('pages.tenants', ['tenants' => $tenants, 'count' =>$count]);
+        return view('pages.tenants', ['tenants' => $tenants, 'count' => $count]);
     }
 
     public function show_tenant($Slug)
@@ -47,5 +49,10 @@ class DefaultController extends Controller
         $dataTenant = RegisBinaanUKM::where('slug', $Slug)->firstOrFail();
         return view('pages.show-tenants', ['dataTenant' => $dataTenant]);
         // return dd($dataTenant);
+    }
+
+    public function cloudinaryTest()
+    {
+        return view('cloudinary-test');
     }
 }

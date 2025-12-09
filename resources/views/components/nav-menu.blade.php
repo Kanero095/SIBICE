@@ -185,7 +185,7 @@
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open"
+                <button @click="open = !open"
                     class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white hover:bg-[#F58441] focus:outline-none focus:bg-white focus:text-[#F58441] transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
@@ -200,7 +200,8 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{ 'block': open, 'hidden': !open }" class="w-full">
+    <div :class="{ 'block': open, 'hidden': !open }"
+        class="hidden sm:hidden bg-[#FDBF0D] px-3 pt-2 pb-3 border-t border-gray-200">
         @if (Auth::check())
             <div class="space-x-8 sm:-my-px sm:ms-5 sm:flex items-center justify-between">
                 <x-dropdown align="right" width="48">

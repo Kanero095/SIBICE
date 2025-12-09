@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Cloudinary\Api\Upload\UploadApi;
 
 class ActivitiesController extends Controller
 {
@@ -17,7 +18,6 @@ class ActivitiesController extends Controller
         } else {
             return view('pages.blank')->with('danger', 'You are not allowed to Access this page');
         }
-
     }
 
     public function submit(Request $request)
@@ -33,16 +33,19 @@ class ActivitiesController extends Controller
         $activities->Description = $request->Description;
         $activities->LinkContent = $request->LinkContent;
 
-        $slug = Str::slug($request->Author.  Str::random(10). $date);
+        $slug = Str::slug($request->Author .  Str::random(10) . $date);
         $count = Activities::where('slug', 'LIKE', "{$slug}%")->count();
         $slug = $count ? "{$slug}-{$count}" : $slug;
 
-        $activities->slug = hash('sha256',$slug);
+        $activities->slug = hash('sha256', $slug);
 
-        $file = $request->file('ImageActivities');
-        $Image = $request->Author . '_' . $dateFormatted . '.' . Str::random(5) .'.' . $file->getClientOriginalExtension();
-        $request->ImageActivities->move('Image/Activities/'.$dateFormatted.'/',$Image);
-        $activities->ImageActivities = $Image;
+        $uploadimage = (new UploadApi())->upload($request->file('ImageActivities')->getRealPath(), [
+            'folder' => 'SIBICE/Activities/' . $dateFormatted,
+            'public_id' => $request->Author . '_' . $dateFormatted,
+            'resource_type' => 'auto',
+            'type' => 'upload',
+        ]);
+        $activities->ImageActivities = $uploadimage['secure_url'];
 
         $activities->save();
         return back()->with('success', 'Activities submit successfully');
@@ -83,8 +86,8 @@ class ActivitiesController extends Controller
 
         if ($request->hasFile('ImageActivities')) {
             $file = $request->file('ImageActivities');
-            $Image = $request->Author . '_' . $dateFormatted . '.' . Str::random(5) .'.' . $file->getClientOriginalExtension();
-            $request->ImageActivities->move('Image/Activities/'.$dateFormatted.'/',$Image );
+            $Image = $request->Author . '_' . $dateFormatted . '.' . Str::random(5) . '.' . $file->getClientOriginalExtension();
+            $request->ImageActivities->move('Image/Activities/' . $dateFormatted . '/', $Image);
         } else {
             $Image = $file->ImageActivities;
         }
@@ -96,10 +99,10 @@ class ActivitiesController extends Controller
             'LinkContent' => request('LinkContent'),
             'dateFormatted' => $dateFormatted,
             'ImageActivities' => $Image,
-            'slug' =>$slug,
+            'slug' => $slug,
         ]);
-        if($activities){
-            return redirect('/activities/manage')->with('success','Update Activities Successfully');
+        if ($activities) {
+            return redirect('/activities/manage')->with('success', 'Update Activities Successfully');
         }
     }
 }
