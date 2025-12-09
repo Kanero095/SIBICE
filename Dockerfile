@@ -1,6 +1,6 @@
 FROM php:8.2-apache
 
-# Install ekstensi PHP yang dibutuhkan Laravel
+# Install ekstensi PHP
 RUN apt-get update && apt-get install -y \
     unzip \
     curl \
@@ -10,10 +10,11 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo pdo_mysql gd
 
-# Enable Apache mod_rewrite (WAJIB untuk Laravel routes)
+# Enable Apache modules
 RUN a2enmod rewrite
+RUN a2enmod headers
 
-# Set Apache DocumentRoot ke public/
+# Set DocumentRoot ke public/
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 
 RUN sed -ri \
@@ -24,15 +25,15 @@ RUN sed -ri \
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copy all Laravel files
+# Copy project Laravel
 COPY . /var/www/html
 
 WORKDIR /var/www/html
 
-# Install dependencies
+# Composer install
 RUN composer install --no-dev --optimize-autoloader
 
-# Set permissions
+# Permission
 RUN chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 80
