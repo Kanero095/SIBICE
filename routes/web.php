@@ -76,3 +76,7 @@ Route::middleware([
 
     // Route::post('/UploadToCloud', [CloudinaryController::class, 'UploadToCloud'])->name('UploadToCloud');
 });
+
+Route::get('/debug-log', function () {
+    return nl2br(file_get_contents(storage_path('logs/laravel.log')));
+});
