@@ -11,8 +11,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo pdo_mysql gd
 
 # Enable Apache modules
-RUN a2enmod rewrite
-RUN a2enmod headers
+RUN a2enmod rewrite headers
 
 # Set DocumentRoot ke public/
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
@@ -25,15 +24,16 @@ RUN sed -ri \
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copy project Laravel
+# Copy ONLY Laravel files
 COPY . /var/www/html
+RUN a2enmod headers rewrite
 
 WORKDIR /var/www/html
 
 # Composer install
 RUN composer install --no-dev --optimize-autoloader
 
-# Permission
+# Fix permission
 RUN chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 80
