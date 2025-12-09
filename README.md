@@ -3,7 +3,7 @@
 <p align="center">
 <img src="https://img.shields.io/badge/Laravel-11-red">
   <img src="https://img.shields.io/badge/TailwindCSS-3-blue">
-  <img src="https://img.shields.io/badge/Database-MySQL-orange">
+  <img src="https://img.shields.io/badge/Database-Supabase-orange">
   <img src="https://img.shields.io/badge/Auth-OAuth_2.0-purple">
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
