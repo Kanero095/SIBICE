@@ -40,7 +40,7 @@ RUN composer install --no-dev --optimize-autoloader
 # 5. Copy .env ke dalam container (kalau ada)
 # -----------------------------------------
 # BISA DIHAPUS jika pakai ENV dari Render dashboard
-COPY .env /var/www/html/.env
+# COPY .env /var/www/html/.env
 
 # -----------------------------------------
 # 6. Laravel setup
