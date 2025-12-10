@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \
     git \
-    && docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl bcmath gd
+    && docker-php-ext-install pdo_pgsql pgsql mbstring zip exif pcntl bcmath gd
 
 # Tambah ServerName biar hilang warning AH00558
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
@@ -57,7 +57,8 @@ RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 # -----------------------------------------
 # 8. Apache DocumentRoot (public folder)
 # -----------------------------------------
-RUN sed -i 's#/var/www/html#/var/www/html/public#g' /etc/apache2/sites-available/000-default.conf
+RUN sed -i 's#DocumentRoot /var/www/html#DocumentRoot /var/www/html/public#g' \
+    /etc/apache2/sites-available/000-default.conf
 
 # -----------------------------------------
 # 9. Expose port
