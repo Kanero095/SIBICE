@@ -19,6 +19,7 @@ RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Enable Apache mod_rewrite (wajib buat Laravel)
 RUN a2enmod rewrite
+RUN a2enmod headers
 
 # -----------------------------------------
 # 2. Set working directory
@@ -40,7 +41,6 @@ RUN composer install --no-dev --optimize-autoloader
 # 5. Copy .env ke dalam container (kalau ada)
 # -----------------------------------------
 # BISA DIHAPUS jika pakai ENV dari Render dashboard
-# COPY .env /var/www/html/.env
 
 # -----------------------------------------
 # 6. Laravel setup
