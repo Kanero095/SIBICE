@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo pdo_mysql gd
 
 # Enable mod_rewrite (WAJIB untuk Laravel)
-RUN a2enmod rewrite
+RUN a2enmod rewrite headers
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
